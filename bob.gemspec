@@ -43,7 +43,6 @@ lib/bob/test/buildable_stub.rb
 lib/bob/test/scm/abstract.rb
 lib/bob/test/scm/git.rb
 lib/bob/test/scm/svn.rb
-lib/core_ext/object.rb
 test/bob_test.rb
 test/helper.rb
 test/scm/git_test.rb
