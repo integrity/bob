@@ -23,23 +23,23 @@ module Bob
         buildable.start_building if buildable.respond_to?(:start_building)
 
         scm.with_commit(buildable.commit) { |commit_info|
-          buildable.finish_building(commit_info, *run_build_script)
+          buildable.finish_building(commit_info, *run)
         }
       end
     end
 
     private
 
-    def run_build_script
-      build_output = nil
-      build_status = false
+    def run
+      output = nil
+      status = false
 
       Bob.logger.debug("Running the build script for #{buildable.uri}")
-      IO.popen(build_script, "r") { |output| build_output = output.read }
-      build_status = $?.success?
-      Bob.logger.debug("Ran build script `#{build_script}` and got:\n#{build_output}")
+      IO.popen(build_script, "r") { |io| output = io.read }
+      status = $?.success?
+      Bob.logger.debug("Ran build script `#{build_script}` and got:\n#{output}")
 
-      [build_status, build_output]
+      [status, output]
     end
 
     def build_script
