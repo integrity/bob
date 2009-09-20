@@ -32,12 +32,14 @@ module Bob
 
     def run_build_script
       build_output = nil
+      build_status = false
 
       Bob.logger.debug("Running the build script for #{buildable.uri}")
       IO.popen(build_script, "r") { |output| build_output = output.read }
+      build_status = $?.success?
       Bob.logger.debug("Ran build script `#{build_script}` and got:\n#{build_output}")
 
-      [$?.success?, build_output]
+      [build_status, build_output]
     end
 
     def build_script
