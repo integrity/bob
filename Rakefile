@@ -21,21 +21,10 @@ end
 desc "Default: run all tests"
 task :default => :test
 
-SCMs = %w[git svn]
-
-desc "Run unit tests"
-task :test => SCMs.map { |scm| "test:#{scm}" } do
-  ruby "test/bob_test.rb"
-  ruby "test/test_test.rb"
-  ruby "test/engine/threaded_test.rb"
+desc "Run tests"
+Rake::TestTask.new(:test) do |t|
+  t.test_files = FileList["test/*_test.rb"]
 end
-
-SCMs.each { |scm|
-  desc "Run unit tests with #{scm}"
-  task "test:#{scm}" do
-    ruby "test/scm/#{scm}_test.rb"
-  end
-}
 
 (defined?(RDoc::Task) ? RDoc::Task : Rake::RDocTask).new do |rd|
   rd.main = "README.rdoc"
