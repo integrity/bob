@@ -20,7 +20,7 @@ module Bob
       # <tt>commit</tt>.
       def dir_for(commit)
         commit = resolve(commit)
-        Bob.directory.join(path, "-", commit)
+        Bob.directory.join(path, commit)
       end
 
       protected
