@@ -4,8 +4,6 @@ module Bob
   class Builder
     attr_reader :buildable
 
-    include Ninja
-
     # Instantiate the Builder, passing an object that understands
     # the <tt>Buildable</tt> interface.
     def initialize(buildable)
@@ -48,6 +46,10 @@ module Bob
 
     def scm
       @scm ||= SCM.new(buildable.scm, buildable.uri, buildable.branch)
+    end
+
+    def in_background(&block)
+      Bob.engine.call(block)
     end
   end
 end

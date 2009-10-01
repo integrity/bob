@@ -13,4 +13,11 @@ class BobTest < Test::Unit::TestCase
 
     assert_same logger, Bob.logger
   end
+
+  test "engine" do
+    engine = Object.new
+    Bob.engine = engine
+
+    assert_same engine, Bob.engine
+  end
 end
