@@ -19,12 +19,12 @@ module Bob::Test
     def create
       create_remote
 
-      run "svn checkout file://#{remote} #{path}"
+      `svn checkout file://#{remote} #{path}`
 
-      add_commit("First commit") do
-        run "echo 'just a test repo' >> README"
+      add_commit("First commit") {
+        `echo 'just a test repo' >> README`
         add "README"
-      end
+      }
     end
 
     def commits
@@ -42,22 +42,22 @@ module Bob::Test
     alias_method :short_head, :head
 
     protected
-      def add(file)
-        run "svn add #{file}"
+      def commit(message)
+        `svn commit -m "#{message}"`
+        `svn up`
       end
 
-      def commit(message)
-        run %Q{svn commit -m "#{message}"}
-        run "svn up"
+      def add(file)
+        `svn add #{file}`
       end
 
     private
       def create_remote
         SvnRepo.server_root.mkdir
 
-        run "svnadmin create #{remote}"
+        `svnadmin create #{remote}`
 
-        File.open(File.join(remote, "conf", "svnserve.conf"), "w") { |f|
+        remote.join("conf", "svnserve.conf").open("w") { |f|
           f.puts "[general]"
           f.puts "anon-access = write"
           f.puts "auth-access = write"

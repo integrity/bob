@@ -3,31 +3,31 @@ module Bob::Test
     attr_reader :path, :name
 
     def initialize(name, base_dir=Bob.directory)
-      @name   = name
-      @path   = File.join(base_dir, @name.to_s)
+      @name = name
+      @path = base_dir.join(name.to_s)
     end
 
-    def add_commit(message, &action)
-      Dir.chdir(path) do
-        yield action
+    def add_commit(message)
+      Dir.chdir(path) {
+        yield
         commit(message)
-      end
+      }
     end
 
     def add_failing_commit
-      add_commit "This commit will fail" do
+      add_commit("This commit will fail") {
         system "echo '#{build_script(false)}' > test"
         system "chmod +x test"
         add    "test"
-      end
+      }
     end
 
     def add_successful_commit
-      add_commit "This commit will work" do
-        system "echo '#{build_script(true)}' > test"
-        system "chmod +x test"
-        add    "test"
-      end
+      add_commit("This commit will work") {
+        `echo '#{build_script(true)}' > test`
+        `chmod +x test`
+        add "test"
+      }
     end
 
     def commits
@@ -47,16 +47,12 @@ module Bob::Test
         raise NotImplementedError
       end
 
-      def run(command)
-        system "#{command} &>/dev/null"
-      end
-
       def build_script(successful=true)
-        <<-script
+        <<SH
 #!/bin/sh
 echo "Running tests..."
 exit #{successful ? 0 : 1}
-script
+SH
       end
   end
 end
