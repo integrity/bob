@@ -19,44 +19,8 @@ class BobTestTest < Test::Unit::TestCase
     assert_equal repo.commits.last["identifier"], repo.head
   end
 
-  def test_buildable_stub
-    b = BuildableStub.new(:git, "git://github.com/ry/node", "master", "HEAD", "make")
-
-    assert_equal "git",                      b.scm
-    assert_equal "git://github.com/ry/node", b.uri
-    assert_equal "master",                   b.branch
-    assert_equal "HEAD",                     b.commit
-    assert_equal "make",                     b.build_script
-  end
-
   def test_scm_repo
     assert_scm_repo(GitRepo.new)
     assert_scm_repo(SvnRepo.new)
-  end
-
-  def test_buildable_git_repo
-    repo = GitRepo.new
-    repo.create
-
-    b = BuildableStub.for(repo, repo.head)
-
-    assert_equal "git",                    b.scm
-    assert_equal "#{Bob.directory}/test_repo", b.uri
-    assert_equal "master",                 b.branch
-    assert_equal repo.head,                b.commit
-    assert_equal "./test",                 b.build_script
-  end
-
-  def test_buildable_svn_repo
-    repo = SvnRepo.new
-    repo.create
-
-    b = BuildableStub.for(repo, repo.head)
-
-    assert_equal "svn",     b.scm
-    assert_equal "",        b.branch
-    assert_equal repo.head, b.commit
-    assert_equal "./test",  b.build_script
-    assert_equal "file://#{Bob.directory}/svn-server/test_repo", b.uri
   end
 end

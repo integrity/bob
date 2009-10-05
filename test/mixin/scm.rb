@@ -6,7 +6,7 @@ module ScmTest
 
     commit_id = repo.commits.last["identifier"]
 
-    buildable = BuildableStub.for(@repo, commit_id)
+    buildable = BuilderStub.for(@repo, commit_id)
     buildable.build
 
     assert_equal :successful,          buildable.status
@@ -20,7 +20,7 @@ module ScmTest
     repo.add_failing_commit
 
     commit_id = repo.commits.last["identifier"]
-    buildable = BuildableStub.for(@repo, commit_id)
+    buildable = BuilderStub.for(@repo, commit_id)
 
     buildable.build
 
@@ -35,7 +35,7 @@ module ScmTest
     repo.add_failing_commit
     repo.add_successful_commit
 
-    buildable = BuildableStub.for(@repo, :head)
+    buildable = BuilderStub.for(@repo, :head)
 
     buildable.build
 

@@ -13,14 +13,13 @@ module Bob
       def with_commit(commit)
         commit = resolve(commit)
         checkout(commit)
-        yield info(commit)
+        yield(commit)
       end
 
       # Directory where the code will be checked out for the given
       # <tt>commit</tt>.
       def dir_for(commit)
-        commit = resolve(commit)
-        Bob.directory.join(path, commit)
+        Bob.directory.join(path, resolve(commit))
       end
 
       protected
@@ -42,24 +41,23 @@ module Bob
         raise NotImplementedError
       end
 
-      def run(command, directory=nil)
-        command = "(#{directory ? "cd #{directory} && " : ""}#{command} &>/dev/null)"
-        Bob.logger.debug(command)
-        system(command) || raise(Error, "Couldn't run SCM command `#{command}`")
-      end
-
-      def path
-        @path ||= "#{uri}-#{branch}".
-          gsub(/[^\w_ \-]+/i, '-'). # Remove unwanted chars.
-          gsub(/[ \-]+/i, '-').     # No more than one of the separator in a row.
-          gsub(/^\-|\-$/i, '')      # Remove leading/trailing separator.
-      end
-
       private
+        def run(cmd, dir=nil)
+          cmd = "(#{dir ? "cd #{dir} && " : ""}#{cmd} &>/dev/null)"
+          Bob.logger.debug(cmd)
+          system(cmd) || raise(Error, "Couldn't run SCM command `#{cmd}`")
+        end
 
-      def resolve(commit)
-        commit == :head ? head : commit
-      end
+        def path
+          @path ||= "#{uri}-#{branch}".
+            gsub(/[^\w_ \-]+/i, '-').# Remove unwanted chars.
+            gsub(/[ \-]+/i, '-').    # No more than one of the separator in a row.
+            gsub(/^\-|\-$/i, '')     # Remove leading/trailing separator.
+        end
+
+        def resolve(commit)
+          commit == :head ? head : commit
+        end
     end
   end
 end

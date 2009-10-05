@@ -7,7 +7,7 @@ module Bob
 
     class Error < StandardError; end
 
-    # Factory to return appropriate SCM instances (according to repository kind)
+    # Factory to return appropriate SCM instances
     def self.new(scm, uri, branch)
       const_get(scm.to_s.capitalize).new(uri, branch)
     end

@@ -1,18 +1,15 @@
 module Bob
   module SCM
     class Svn < Abstract
-      protected
-
-      def info(revision)
-        dump = `svn log --non-interactive --revision #{revision} #{uri}`.split("\n")
+      def info(rev)
+        dump = `svn log --non-interactive --revision #{rev} #{uri}`.split("\n")
         meta = dump[1].split(" | ")
 
-        { "identifier" => revision,
-          "message" => dump[3],
-          "author"  => meta[1],
+        { "identifier"   => rev,
+          "message"      => dump[3],
+          "author"       => meta[1],
           "committed_at" => Time.parse(meta[2]) }
       end
-
 
       def head
         `svn info #{uri}`.split("\n").detect { |l| l =~ /^Revision: (\d+)/ }
@@ -20,18 +17,14 @@ module Bob
       end
 
       private
-
-      def checkout(revision)
-        unless checked_out?(revision)
-          run "svn co -q #{uri} #{dir_for(revision)}"
+        def checkout(rev)
+          run "svn co -q #{uri} #{dir_for(rev)}" unless checked_out?(rev)
+          run "svn up -q -r#{rev}", dir_for(rev)
         end
 
-        run "svn up -q -r#{revision}", dir_for(revision)
-      end
-
-      def checked_out?(commit)
-        dir_for(commit).join(".svn").directory?
-      end
+        def checked_out?(rev)
+          dir_for(rev).join(".svn").directory?
+        end
     end
   end
 end

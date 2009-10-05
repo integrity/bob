@@ -17,41 +17,36 @@ module Bob
     # 3. Run the build script on it.
     # 4. Reports the build back to the buildable.
     def build
-      Bob.logger.info "Building #{buildable.commit} of the #{buildable.scm} repo at #{buildable.uri}"
-
-      in_background do
-        buildable.start_building if buildable.respond_to?(:start_building)
-
-        scm.with_commit(buildable.commit) { |commit_info|
-          buildable.finish_building(commit_info, *run)
-        }
-      end
+      scm.with_commit(buildable["commit"]) { |commit|
+        started(scm.info(commit))
+        completed(*run)
+      }
     end
+
+    protected
+      def started(commit_info)
+      end
+
+      def completed(status, output)
+      end
 
     private
+      def run
+        output = ""
+        status = false
 
-    def run
-      output = nil
-      status = false
+        IO.popen(script, "r") { |io| output = io.read }
+        status = $?.success?
 
-      Bob.logger.debug("Running the build script for #{buildable.uri}")
-      IO.popen(build_script, "r") { |io| output = io.read }
-      status = $?.success?
-      Bob.logger.debug("Ran build script `#{build_script}` and got:\n#{output}")
+        [status, output]
+      end
 
-      [status, output]
-    end
+      def script
+        "(cd #{scm.dir_for(buildable["commit"])} && #{buildable["command"]} 2>&1)"
+      end
 
-    def build_script
-      "(cd #{scm.dir_for(buildable.commit)} && #{buildable.build_script} 2>&1)"
-    end
-
-    def scm
-      @scm ||= SCM.new(buildable.scm, buildable.uri, buildable.branch)
-    end
-
-    def in_background(&block)
-      Bob.engine.call(block)
-    end
+      def scm
+        @scm ||= SCM.new(buildable["scm"], buildable["uri"], buildable["branch"])
+      end
   end
 end
