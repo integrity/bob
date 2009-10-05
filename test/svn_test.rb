@@ -6,7 +6,7 @@ class BobSvnTest < Test::Unit::TestCase
   def setup
     super
 
-    @repo = SvnRepo.new(:test_repo)
+    @repo = SvnRepo.new
     @repo.create
   end
 

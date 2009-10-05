@@ -4,18 +4,7 @@ module Bob
       include Bob::Buildable
 
       def self.for(repo, commit)
-        scm = (Bob::Test::GitRepo === repo) ? "git" : "svn"
-        uri =
-          if scm == "git"
-            repo.path
-          else
-            "file://#{SvnRepo.server_root}/#{repo.name}"
-          end
-        # TODO: move onto repo object?
-        branch = (scm == "git") ? "master" : ""
-        build_script = "./test"
-
-        new(scm, uri, branch, commit, build_script)
+        new(repo.scm, repo.uri, repo.branch, commit, repo.command)
       end
 
       attr_reader :scm, :uri, :branch, :commit, :build_script,

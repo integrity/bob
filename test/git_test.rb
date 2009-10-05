@@ -6,7 +6,7 @@ class BobGitTest < Test::Unit::TestCase
   def setup
     super
 
-    @repo = GitRepo.new(:test_repo)
+    @repo = GitRepo.new
     @repo.create
   end
 

@@ -30,12 +30,12 @@ class BobTestTest < Test::Unit::TestCase
   end
 
   def test_scm_repo
-    assert_scm_repo(GitRepo.new(:my_test_project))
-    assert_scm_repo(SvnRepo.new(:my_test_project))
+    assert_scm_repo(GitRepo.new)
+    assert_scm_repo(SvnRepo.new)
   end
 
   def test_buildable_git_repo
-    repo = GitRepo.new(:test_repo)
+    repo = GitRepo.new
     repo.create
 
     b = BuildableStub.for(repo, repo.head)
@@ -48,7 +48,7 @@ class BobTestTest < Test::Unit::TestCase
   end
 
   def test_buildable_svn_repo
-    repo = SvnRepo.new(:test_repo)
+    repo = SvnRepo.new
     repo.create
 
     b = BuildableStub.for(repo, repo.head)
@@ -57,6 +57,6 @@ class BobTestTest < Test::Unit::TestCase
     assert_equal "",        b.branch
     assert_equal repo.head, b.commit
     assert_equal "./test",  b.build_script
-    assert_equal "file://#{Bob.directory}/svn/test_repo", b.uri
+    assert_equal "file://#{Bob.directory}/svn-server/test_repo", b.uri
   end
 end
