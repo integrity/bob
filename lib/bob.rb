@@ -10,8 +10,6 @@ require "bob/scm"
 require "bob/engine"
 
 module Bob
-  # Builds the specified <tt>buildable</tt>. This object must understand
-  # the API described in the README.
   def self.build(buildable)
     Builder.new(buildable).build
   end
