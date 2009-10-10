@@ -1,4 +1,4 @@
-require File.dirname(__FILE__) + "/helper"
+require "helper"
 
 class BobTestTest < Test::Unit::TestCase
   def assert_scm_repo(repo)
