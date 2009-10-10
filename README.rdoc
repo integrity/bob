@@ -1,6 +1,6 @@
 = Bob the Builder
 
-Bob builds your code
+Bob builds your code.
 
 == Do I need this?
 
@@ -9,5 +9,6 @@ automated CI server, which is what most people need.
 
 == Credits
 
+Thanks a lot to raggi[http://github.com/raggi] for the threaded engine.
 Authors:: Nicolas Sanguinetti (foca[http://github.com/foca]) and Simon Rozet (sr[http://github.com/sr])
 License:: MIT (Check LICENSE for details)
