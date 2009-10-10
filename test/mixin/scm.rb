@@ -11,8 +11,6 @@ module ScmTest
 
     assert_equal :successful,          buildable.status
     assert_equal "Running tests...\n", buildable.output
-    assert_equal "John Doe <johndoe@example.org>",
-      buildable.commit_info["author"]
     assert_equal "This commit will work", buildable.commit_info["message"]
     assert_equal commit_id,               buildable.commit_info["identifier"]
     assert buildable.commit_info["committed_at"].is_a?(Time)
