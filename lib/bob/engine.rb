@@ -3,7 +3,7 @@ module Bob
   # that responds to #call and takes a Proc object, which should be executed
   # "in the background". The different engines are:
   module Engine
-    autoload :Foreground, "bob/engine/foreground"
-    autoload :Threaded,   "bob/engine/threaded"
+    autoload :Threaded, "bob/engine/threaded"
+    Foreground = lambda {|b| b.call }
   end
 end
