@@ -17,13 +17,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "addressable"
 
-  if s.respond_to?(:add_development_dependency)
-    s.add_development_dependency "sr-mg"
-    s.add_development_dependency "contest"
-    s.add_development_dependency "redgreen"
-    s.add_development_dependency "ruby-debug"
-  end
-
   s.files = %w[
 .gitignore
 LICENSE
