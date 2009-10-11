@@ -35,7 +35,7 @@ module ScmTest
     repo.add_failing_commit
     repo.add_successful_commit
 
-    buildable = BuilderStub.for(@repo, :head)
+    buildable = BuilderStub.for(@repo, "HEAD")
 
     buildable.build
 

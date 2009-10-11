@@ -56,7 +56,7 @@ module Bob
         end
 
         def resolve(commit)
-          commit == :head ? head : commit
+          commit == "HEAD" ? head : commit
         end
     end
   end
