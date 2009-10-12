@@ -43,7 +43,7 @@ module Bob
 
       private
         def run(cmd, dir=nil)
-          cmd = "(#{dir ? "cd #{dir} && " : ""}#{cmd} &>/dev/null)"
+          cmd = "(#{dir ? "cd #{dir} && " : ""}#{cmd} > /dev/null 2>&1)"
           Bob.logger.debug(cmd)
           system(cmd) || raise(Error, "Couldn't run SCM command `#{cmd}`")
         end
