@@ -2,7 +2,7 @@ module Bob
   module SCM
     class Git < Abstract
       def info(commit)
-        format = "---%nidentifier: %H%nauthor: %an " +
+        format = "---%nidentifier: %H%nauthor: %an " \
           "<%ae>%nmessage: >-%n  %s%ncommitted_at: %ci%n"
 
         dump = YAML.load(`cd #{dir_for(commit)} && git show -s \
