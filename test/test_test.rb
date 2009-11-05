@@ -10,13 +10,13 @@ class BobTestTest < Test::Unit::TestCase
     repo.add_failing_commit
     assert_equal 2, repo.commits.size
     assert_equal "This commit will fail", repo.commits.last["message"]
-    assert_equal repo.commits.last["identifier"], repo.head
+    assert_equal repo.commits.last["id"], repo.head
     assert repo.short_head
 
     repo.add_successful_commit
     assert_equal 3, repo.commits.size
     assert_equal "This commit will work", repo.commits.last["message"]
-    assert_equal repo.commits.last["identifier"], repo.head
+    assert_equal repo.commits.last["id"], repo.head
   end
 
   def test_scm_repo

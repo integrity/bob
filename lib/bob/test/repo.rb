@@ -35,7 +35,7 @@ module Bob::Test
     end
 
     def head
-      commits.last["identifier"]
+      commits.last["id"]
     end
 
     def short_head
@@ -96,8 +96,8 @@ SH
       Dir.chdir(@path) {
         `git log --pretty=oneline`.collect { |l| l.split(" ").first }.
         inject([]) { |acc, sha1|
-          fmt  = "---%nmessage: >-%n  %s%ntimestamp: %ci%n" +
-            "identifier: %H%nauthor: %n name: %an%n email: %ae%n"
+          fmt  = "---%nmessage: >-%n  %s%ntimestamp: %ci%n" \
+            "id: %H%nauthor: %n name: %an%n email: %ae%n"
           acc << YAML.load(`git show -s --pretty=format:"#{fmt}" #{sha1}`)
         }.reverse
       }
@@ -153,9 +153,9 @@ SH
       Dir.chdir(@path) do
         doc = Hpricot::XML(`svn log --xml`)
         (doc/:log/:logentry).inject([]) { |acc, c|
-          acc << { "identifier" => c["revision"],
-            "message"      => c.at("msg").inner_html,
-            "committed_at" => Time.parse(c.at("date").inner_html) }
+          acc << { "id" => c["revision"],
+            "message"   => c.at("msg").inner_html,
+            "timestamp" => Time.parse(c.at("date").inner_html) }
         }.reverse
       end
     end
