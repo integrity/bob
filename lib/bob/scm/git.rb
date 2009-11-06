@@ -1,7 +1,7 @@
 module Bob
   module SCM
     class Git < Abstract
-      def info(commit)
+      def metadata(commit)
         format = "---%nid: %H%nauthor: %an " \
           "<%ae>%nmessage: >-%n  %s%ntimestamp: %ci%n"
 

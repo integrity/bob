@@ -1,7 +1,7 @@
 module Bob
   module SCM
     class Svn < Abstract
-      def info(rev)
+      def metadata(rev)
         dump = `svn log --non-interactive --revision #{rev} #{uri}`.split("\n")
         meta = dump[1].split(" | ")
 

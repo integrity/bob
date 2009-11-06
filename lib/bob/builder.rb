@@ -8,7 +8,7 @@ module Bob
 
     def build
       scm.with_commit(buildable["commit"]) { |commit|
-        started(scm.info(commit))
+        started(scm.metadata(commit))
         completed(*run)
       }
     end
